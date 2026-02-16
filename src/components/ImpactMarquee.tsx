@@ -88,7 +88,7 @@ export default function ImpactMarquee() {
   const strip = useMemo(() => [...items, ...items], []);
   const [active, setActive] = useState<Item | null>(null);
 
-  // Smooth autoplay marquee
+  // Smooth autoplay marquee (scrollLeft)
   useEffect(() => {
     const viewport = viewportRef.current;
     const content = contentRef.current;
@@ -96,10 +96,10 @@ export default function ImpactMarquee() {
 
     let raf = 0;
     let last = performance.now();
-    const speed = 60;
+    const speed = 60; // px/sec
 
     const tick = (t: number) => {
-      // pause scroll if modal is open
+      // pause when modal open
       if (active) {
         raf = requestAnimationFrame(tick);
         last = t;
@@ -188,7 +188,6 @@ export default function ImpactMarquee() {
 
                     <div className="mt-6 text-xs opacity-90">Click to expand →</div>
 
-                    {/* sheen */}
                     <div className="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100">
                       <div className="absolute -left-10 top-6 h-28 w-28 rounded-full bg-white/20 blur-2xl" />
                       <div className="absolute -right-16 -top-10 h-36 w-36 rounded-full bg-white/12 blur-2xl" />
@@ -214,82 +213,97 @@ export default function ImpactMarquee() {
 
           {/* Panel */}
           <div className="relative mx-auto mt-10 w-[92vw] max-w-5xl overflow-hidden rounded-3xl bg-[#0F0610] text-white shadow-2xl ring-1 ring-white/10 md:mt-16">
-            {/* Top media area (video/image placeholder for now) */}
-            <div className="relative h-[260px] md:h-[360px]">
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${toneClasses(active.tone)}`}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0F0610] via-black/25 to-black/40" />
+            {/* Open animation */}
+            <div className="animate-[pop_.18s_ease-out]">
+              {/* Top media area */}
+              <div className="relative h-[260px] md:h-[360px]">
+                <div className={`absolute inset-0 bg-gradient-to-br ${toneClasses(active.tone)}`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0610] via-black/25 to-black/40" />
 
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="text-xs uppercase tracking-[0.26em] text-white/70">
-                  {active.category}
-                </div>
-                <div className="mt-2 text-2xl font-semibold md:text-4xl">
-                  {active.title}
-                </div>
-                <div className="mt-3 max-w-2xl text-sm text-white/80 md:text-base">
-                  {active.summary}
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setActive(null)}
-                className="absolute right-4 top-4 rounded-full bg-black/50 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-black/70"
-              >
-                Close
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="grid gap-8 p-6 md:grid-cols-12 md:p-8">
-              <div className="md:col-span-7">
-                <div className="text-sm font-semibold text-white/90">
-                  What this includes
-                </div>
-                <ul className="mt-4 grid gap-3">
-                  {active.bullets.map((b) => (
-                    <li
-                      key={b}
-                      className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/85 ring-1 ring-white/10"
-                    >
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="md:col-span-5">
-                <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
-                  <div className="text-sm font-semibold">Take action</div>
-                  <div className="mt-2 text-sm text-white/75">
-                    Your support turns projects into real outcomes.
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="text-xs uppercase tracking-[0.26em] text-white/70">
+                    {active.category}
                   </div>
-
-                  <div className="mt-5 flex flex-col gap-3">
-                    <Link
-                      href={active.ctaHref || "/donate"}
-                      className="rounded-xl bg-[#D6B15A] px-5 py-3 text-sm font-semibold text-[#4B0B22] hover:brightness-95"
-                    >
-                      {active.ctaLabel || "Support this project"}
-                    </Link>
-
-                    <Link
-                      href="/impact"
-                      className="rounded-xl border border-white/20 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:border-white/40"
-                    >
-                      Browse all impact
-                    </Link>
+                  <div className="mt-2 text-2xl font-semibold md:text-4xl">
+                    {active.title}
+                  </div>
+                  <div className="mt-3 max-w-2xl text-sm text-white/80 md:text-base">
+                    {active.summary}
                   </div>
                 </div>
 
-                <div className="mt-4 text-xs text-white/60">
-                  Tip: press Esc to close.
+                <button
+                  type="button"
+                  onClick={() => setActive(null)}
+                  className="absolute right-4 top-4 rounded-full bg-black/55 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-black/75"
+                >
+                  Close
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="grid gap-8 p-6 md:grid-cols-12 md:p-8">
+                <div className="md:col-span-7">
+                  <div className="text-sm font-semibold text-white/90">
+                    What this includes
+                  </div>
+                  <ul className="mt-4 grid gap-3">
+                    {active.bullets.map((b) => (
+                      <li
+                        key={b}
+                        className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/85 ring-1 ring-white/10"
+                      >
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="md:col-span-5">
+                  <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
+                    <div className="text-sm font-semibold">Take action</div>
+                    <div className="mt-2 text-sm text-white/75">
+                      Your support turns projects into real outcomes.
+                    </div>
+
+                    <div className="mt-5 flex flex-col gap-3">
+                      <Link
+                        href={active.ctaHref || "/donate"}
+                        className="rounded-xl bg-[#D6B15A] px-5 py-3 text-sm font-semibold text-[#4B0B22] hover:brightness-95"
+                      >
+                        {active.ctaLabel || "Support this project"}
+                      </Link>
+
+                      <Link
+                        href="/impact"
+                        className="rounded-xl border border-white/20 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:border-white/40"
+                      >
+                        Browse all impact
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 text-xs text-white/60">
+                    Tip: press Esc to close.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* keyframes */}
+          <style jsx>{`
+            @keyframes pop {
+              from {
+                transform: translateY(10px) scale(0.98);
+                opacity: 0;
+              }
+              to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+              }
+            }
+          `}</style>
         </div>
       )}
     </>
