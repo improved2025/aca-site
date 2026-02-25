@@ -115,11 +115,7 @@ export default function LeadershipPage() {
           ))}
         </div>
 
-        {/* Note */}
-        <div className="mx-auto mt-10 max-w-3xl rounded-3xl bg-white/70 p-6 text-center text-sm text-black/70 ring-1 ring-black/5 backdrop-blur">
-          When you’re ready, add photos by setting <span className="font-semibold">photo</span> for each leader
-          (example: <span className="font-mono">"/leaders/obum-okoye.jpg"</span>).
-        </div>
+        
       </section>
     </main>
   );

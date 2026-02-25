@@ -1,4 +1,5 @@
 import HeroCarousel from "@/components/HeroCarousel";
+import ConventionCountdownStrip from "@/components/ConventionCountdownStrip";
 import ImpactMarquee from "@/components/ImpactMarquee";
 import Link from "next/link";
 
@@ -7,8 +8,11 @@ export default function Home() {
     <main>
       <HeroCarousel />
 
+      {/* Promo countdown (thin, premium, clickable) */}
+      <ConventionCountdownStrip />
+
       {/* Quick actions (more visual, less text) */}
-      <section className="relative -mt-10">
+      <section className="relative mt-6">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 pb-10 md:grid-cols-4">
           <QuickCard title="Donate" hint="Support projects" href="/donate" icon="heart" />
           <QuickCard title="Tickets" hint="Convention access" href="/tickets" icon="ticket" />
