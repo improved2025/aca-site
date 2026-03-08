@@ -33,7 +33,7 @@ export default function Footer() {
                 </Link>
 
                 <Link
-                  href="/events/2026-convention"
+                  href="/convention/2026"
                   className="rounded-xl border border-white/25 bg-white/10 px-6 py-3 text-sm font-bold text-[#F7E9D3] hover:bg-white/15 hover:border-white/45"
                 >
                   Convention
@@ -51,20 +51,20 @@ export default function Footer() {
             <div className="md:col-span-7">
               <div className="grid gap-10 sm:grid-cols-3">
                 <FooterCol title="Explore">
-                  <FooterLink href="/about" label="About" />
+                  <FooterLink href="/about/who-we-are" label="About" />
                   <FooterLink href="/impact" label="Impact" />
                   <FooterLink href="/membership" label="Membership" />
                 </FooterCol>
 
                 <FooterCol title="Events">
-                  <FooterLink href="/events/2026-convention" label="2026 Convention" />
+                  <FooterLink href="/convention/2026" label="2026 Convention" />
                   <FooterLink href="/tickets" label="Tickets" />
                   <FooterLink href="/raffle" label="Raffle" />
                 </FooterCol>
 
                 <FooterCol title="Legal">
-                  <FooterLink href="/privacy" label="Privacy" />
-                  <FooterLink href="/terms" label="Terms" />
+                  <FooterLink href="/terms" label="Terms of Use" />
+                  <FooterLink href="/privacy" label="Privacy Policy" />
                   <FooterLink href="/donations-policy" label="Donations Policy" />
                 </FooterCol>
               </div>
@@ -86,7 +86,7 @@ export default function Footer() {
 
           <div className="mt-14 flex flex-col gap-3 border-t border-white/15 pt-7 text-xs text-[#F7E9D3]/75 md:flex-row md:items-center md:justify-between">
             <div>
-              © {new Date().getFullYear()} Awkuzu Cultural Association. All rights reserved.
+              © {new Date().getFullYear()} Awkuzu Cultural Association • 501(c)(3) Nonprofit Organization. All rights reserved.
             </div>
             <div className="text-[#F7E9D3]/75">Built for community impact.</div>
           </div>

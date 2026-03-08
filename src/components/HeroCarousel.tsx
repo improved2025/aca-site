@@ -36,7 +36,7 @@ export default function HeroCarousel() {
         <div className="flex">
           {slides.map((slide, i) => (
             <div key={i} className="relative flex-[0_0_100%]">
-              <div className="relative h-[75vh] min-h-[520px] w-full">
+              <div className="relative h-[68vh] min-h-[460px] w-full md:h-[75vh] md:min-h-[520px]">
                 <video
                   className="h-full w-full object-cover"
                   src={slide.src}
@@ -48,36 +48,36 @@ export default function HeroCarousel() {
                 />
 
                 {/* Dark cinematic overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/40" />
 
                 {/* CTA layer */}
-                <div className="absolute bottom-12 left-0 right-0">
-                  <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-6 px-4">
-                    <div>
-                      <div className="text-xs uppercase tracking-[0.3em] text-white/70">
+                <div className="absolute inset-x-0 bottom-12 md:bottom-14">
+                  <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 sm:px-5 md:flex-row md:items-end">
+                    <div className="max-w-2xl">
+                      <div className="text-[10px] uppercase tracking-[0.28em] text-white/70 sm:text-xs">
                         Welcome to ACA • Unity and Progress
                       </div>
 
-                      <h1 className="mt-2 text-3xl font-semibold text-white md:text-5xl">
+                      <h1 className="mt-3 max-w-[13ch] text-3xl font-semibold leading-tight text-white sm:text-4xl md:mt-2 md:max-w-none md:text-5xl">
                         Awkuzu Cultural Association (USA)
                       </h1>
 
-                      <p className="mt-3 max-w-xl text-sm text-white/75 md:text-base">
+                      <p className="mt-3 max-w-md text-sm leading-relaxed text-white/80 md:max-w-xl md:text-base">
                         A 501(c)(3) nonprofit serving community development, culture, and impact.
                       </p>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                       <Link
                         href="/donate"
-                        className="rounded-xl bg-cream px-6 py-3 text-sm font-semibold text-wine hover:bg-white"
+                        className="inline-flex items-center justify-center rounded-xl bg-cream px-6 py-3 text-sm font-semibold text-wine hover:bg-white"
                       >
                         Donate
                       </Link>
 
                       <Link
                         href="/convention/2026"
-                        className="rounded-xl border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:border-white/50"
+                        className="inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:border-white/50"
                       >
                         Convention
                       </Link>
@@ -87,7 +87,7 @@ export default function HeroCarousel() {
 
                 {/* Dots */}
                 <div className="absolute bottom-4 left-0 right-0">
-                  <div className="mx-auto flex max-w-6xl gap-2 px-4">
+                  <div className="mx-auto flex max-w-6xl gap-2 px-4 sm:px-5">
                     {slides.map((_, idx) => (
                       <button
                         key={idx}
