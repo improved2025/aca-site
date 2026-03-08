@@ -2,6 +2,61 @@ import Image from "next/image";
 import Link from "next/link";
 import { conventions } from "../conventionData";
 
+type GalleryImage = {
+  src: string;
+  alt: string;
+  orientation?: "landscape" | "portrait";
+};
+
+function getGallery(year: number): GalleryImage[] {
+  if (year === 2023) {
+    return [
+      { src: "/convention/houston/hp1.jpg", alt: "Houston convention photo 1" },
+      { src: "/convention/houston/hp2.jpg", alt: "Houston convention photo 2" },
+      { src: "/convention/houston/hp3.jpg", alt: "Houston convention photo 3" },
+      { src: "/convention/houston/hp4.jpg", alt: "Houston convention photo 4" },
+      { src: "/convention/houston/hp5.jpg", alt: "Houston convention photo 5" },
+      { src: "/convention/houston/hp6.jpg", alt: "Houston convention photo 6" },
+      { src: "/convention/houston/hp7.jpg", alt: "Houston convention photo 7" },
+      { src: "/convention/houston/hp8.jpg", alt: "Houston convention photo 8" },
+      { src: "/convention/houston/hp9.jpg", alt: "Houston convention photo 9" },
+      { src: "/convention/houston/hp10.jpg", alt: "Houston convention photo 10", orientation: "portrait" },
+    ];
+  }
+
+  if (year === 2024) {
+    return [
+      { src: "/convention/atlanta/ap1.jpeg", alt: "Atlanta convention photo 1" },
+      { src: "/convention/atlanta/ap2.jpeg", alt: "Atlanta convention photo 2" },
+      { src: "/convention/atlanta/ap3.jpeg", alt: "Atlanta convention photo 3" },
+      { src: "/convention/atlanta/ap4.jpeg", alt: "Atlanta convention photo 4" },
+      { src: "/convention/atlanta/ap5.jpeg", alt: "Atlanta convention photo 5" },
+      { src: "/convention/atlanta/ap6.jpeg", alt: "Atlanta convention photo 6" },
+      { src: "/convention/atlanta/ap7.jpeg", alt: "Atlanta convention photo 7" },
+      { src: "/convention/atlanta/ap8.jpeg", alt: "Atlanta convention photo 8" },
+      { src: "/convention/atlanta/ap9.jpeg", alt: "Atlanta convention photo 9" },
+      { src: "/convention/atlanta/ap10.jpeg", alt: "Atlanta convention photo 10", orientation: "portrait" },
+    ];
+  }
+
+  if (year === 2022) {
+    return [
+      { src: "/convention/maryland/mp1.jpeg", alt: "Maryland convention photo 1" },
+      { src: "/convention/maryland/mp2.jpeg", alt: "Maryland convention photo 2" },
+      { src: "/convention/maryland/mp3.jpeg", alt: "Maryland convention photo 3" },
+      { src: "/convention/maryland/mp4.jpeg", alt: "Maryland convention photo 4" },
+      { src: "/convention/maryland/mp5.jpeg", alt: "Maryland convention photo 5" },
+      { src: "/convention/maryland/mp6.jpeg", alt: "Maryland convention photo 6" },
+      { src: "/convention/maryland/mp7.jpeg", alt: "Maryland convention photo 7" },
+      { src: "/convention/maryland/mp8.jpeg", alt: "Maryland convention photo 8" },
+      { src: "/convention/maryland/mp9.jpeg", alt: "Maryland convention photo 9" },
+      { src: "/convention/maryland/mp10.jpeg", alt: "Maryland convention photo 10", orientation: "portrait" },
+    ];
+  }
+
+  return [];
+}
+
 export default async function ConventionYearPage({
   params,
 }: {
@@ -11,6 +66,7 @@ export default async function ConventionYearPage({
   const y = Number(year);
 
   const c = conventions.find((x) => x.year === y);
+  const gallery = getGallery(y);
 
   if (!c) {
     return (
@@ -19,7 +75,10 @@ export default async function ConventionYearPage({
         <p className="mt-3 text-black/70">
           That year isn’t in the list. (Note: there is no 2021.)
         </p>
-        <Link href="/convention" className="mt-6 inline-flex rounded-xl bg-[#4B0B22] px-5 py-3 text-sm font-semibold text-white">
+        <Link
+          href="/convention"
+          className="mt-6 inline-flex rounded-xl bg-[#4B0B22] px-5 py-3 text-sm font-semibold text-white"
+        >
           Back to past conventions
         </Link>
       </main>
@@ -38,7 +97,7 @@ export default async function ConventionYearPage({
               {c.city}
             </h1>
             <p className="mt-3 max-w-2xl text-black/70 md:text-lg">
-              Official flyer and photo gallery (coming soon).
+              Official flyer and photo gallery from the {c.year} convention.
             </p>
           </div>
 
@@ -64,21 +123,73 @@ export default async function ConventionYearPage({
           </div>
         </div>
 
-        {/* Gallery placeholder */}
+        {/* Gallery */}
         <div className="mt-12 rounded-3xl bg-white/70 p-6 ring-1 ring-black/5 backdrop-blur">
-          <div className="text-sm font-semibold text-[#4B0B22]">Photo gallery</div>
-          <p className="mt-2 text-sm text-black/70">
-            Add pictures later. This page is already structured for a gallery section.
-          </p>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-2xl bg-black/5 ring-1 ring-black/5"
-              />
-            ))}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-sm font-semibold text-[#4B0B22]">Photo gallery</div>
+              <p className="mt-2 text-sm text-black/70">
+                {gallery.length > 0
+                  ? `Highlights from the ${c.year} convention in ${c.city}.`
+                  : "Gallery photos will be added later."}
+              </p>
+            </div>
           </div>
+
+          {gallery.length > 0 ? (
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {gallery.map((img, i) => (
+                <div
+                  key={img.src}
+                  className={`group overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 shadow-sm ${
+                    img.orientation === "portrait"
+                      ? "sm:col-span-2 lg:col-span-1 lg:row-span-2"
+                      : ""
+                  }`}
+                >
+                  <div
+                    className={`relative w-full ${
+                      img.orientation === "portrait"
+                        ? "aspect-[4/5]"
+                        : "aspect-[16/10]"
+                    }`}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                      sizes={
+                        img.orientation === "portrait"
+                          ? "(max-width: 1024px) 100vw, 360px"
+                          : "(max-width: 1024px) 100vw, 420px"
+                      }
+                    />
+                  </div>
+
+                  <div className="p-4">
+                    <div className="text-sm font-semibold text-[#1A0610]">
+                      {c.city} • Photo {i + 1}
+                    </div>
+                    <div className="mt-1 text-sm text-black/65">
+                      Convention gallery highlight
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`rounded-2xl bg-black/5 ring-1 ring-black/5 ${
+                    i === 9 ? "aspect-[4/5]" : "aspect-[16/10]"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

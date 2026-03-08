@@ -4,13 +4,19 @@ import useEmblaCarousel from "embla-carousel-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type Slide = {
+  type: "video";
+  src: string;
+};
+
 export default function HeroCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selected, setSelected] = useState(0);
 
-  // For now we only use ONE video slide.
-  // Later you can add images easily.
-  const slides = [{ type: "video", src: "/hero/hero.mp4" }];
+  const slides: Slide[] = [
+    { type: "video", src: "/hero/hero.mp4" },
+    { type: "video", src: "/hero/hero2.mp4" },
+  ];
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -70,7 +76,7 @@ export default function HeroCarousel() {
                       </Link>
 
                       <Link
-                        href="/events/2026-convention"
+                        href="/convention/2026"
                         className="rounded-xl border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:border-white/50"
                       >
                         Convention
@@ -79,12 +85,13 @@ export default function HeroCarousel() {
                   </div>
                 </div>
 
-                {/* Dots (future-ready for multiple slides) */}
+                {/* Dots */}
                 <div className="absolute bottom-4 left-0 right-0">
                   <div className="mx-auto flex max-w-6xl gap-2 px-4">
                     {slides.map((_, idx) => (
                       <button
                         key={idx}
+                        type="button"
                         onClick={() => emblaApi?.scrollTo(idx)}
                         className={`h-2 w-2 rounded-full transition ${
                           selected === idx ? "bg-cream" : "bg-white/40"
