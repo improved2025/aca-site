@@ -74,7 +74,7 @@ export default function Footer() {
                   <div>
                     <div className="text-sm font-bold tracking-wide">Contact</div>
                     <div className="mt-2 text-sm leading-relaxed text-[#F7E9D3]/85">
-                      Add address, email, and phone here when ready.
+                      awkuzuculturalassociationusa@gmail.com.
                     </div>
                   </div>
 
