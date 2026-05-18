@@ -3,11 +3,20 @@
 import { useState } from "react";
 
 const villages = [
-  "Amikpo",
-  "Ifite",
-  "Iruowelle",
-  "Enugwu",
-  "Other",
+   "Iru-Anyika",
+  "Aka-Ezi",
+  "Igbu",
+  "Ozu",
+  "Amabo",
+  "Isioji",
+  "Ifite-Umueri",
+  "Ezinkwo",
+  "Nkwelle-Awkuzu",
+  "Umuobi",
+  "Ukpomachi",
+  "Dusogu",
+  "Otoko",
+  "Umudioka",
 ];
 
 export default function MembershipPage() {
