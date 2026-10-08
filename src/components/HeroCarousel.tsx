@@ -18,7 +18,7 @@ const slides: Slide[] = [
 ];
 
 export default function HeroCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, watchDrag: false });
   const [selected, setSelected] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -26,14 +26,18 @@ export default function HeroCarousel() {
     videoRefs.current.forEach((video, videoIndex) => {
       if (!video) return;
 
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
       if (videoIndex === index) {
-        video.currentTime = 0;
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            // Browser autoplay policies can block playback if the video is not muted.
-            // The video is muted, so this is only a quiet safety fallback.
-          });
+        if (video.readyState >= 2) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // Quiet fallback. Muted inline videos should autoplay in modern browsers.
+            });
+          }
         }
       } else {
         video.pause();
@@ -59,6 +63,10 @@ export default function HeroCarousel() {
     };
   }, [emblaApi, playSelectedVideo]);
 
+  useEffect(() => {
+    playSelectedVideo(selected);
+  }, [selected, playSelectedVideo]);
+
   function goToNextSlide(index: number) {
     if (!emblaApi) return;
 
@@ -83,9 +91,13 @@ export default function HeroCarousel() {
                   }}
                   className="h-full w-full object-cover"
                   src={slide.src}
+                  autoPlay={i === selected}
                   muted
                   playsInline
-                  preload="metadata"
+                  preload="auto"
+                  onLoadedData={() => {
+                    if (i === selected) playSelectedVideo(i);
+                  }}
                   onCanPlay={() => {
                     if (i === selected) playSelectedVideo(i);
                   }}
