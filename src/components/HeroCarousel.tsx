@@ -2,36 +2,73 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Slide = {
   type: "video";
   src: string;
 };
 
+const slides: Slide[] = [
+  { type: "video", src: "/hero/hero.mp4" },
+  { type: "video", src: "/hero/hero2.mp4" },
+  { type: "video", src: "/hero/hero3.mp4" },
+  { type: "video", src: "/hero/hero4.mp4" },
+  { type: "video", src: "/hero/hero5.mp4" },
+];
+
 export default function HeroCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selected, setSelected] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  const slides: Slide[] = [
-    { type: "video", src: "/hero/hero.mp4" },
-    { type: "video", src: "/hero/hero2.mp4" },
-    { type: "video", src: "/hero/hero3.mp4" },
-    { type: "video", src: "/hero/hero4.mp4" },
-    { type: "video", src: "/hero/hero5.mp4" },
-  ];
+  const playSelectedVideo = useCallback((index: number) => {
+    videoRefs.current.forEach((video, videoIndex) => {
+      if (!video) return;
+
+      if (videoIndex === index) {
+        video.currentTime = 0;
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Browser autoplay policies can block playback if the video is not muted.
+            // The video is muted, so this is only a quiet safety fallback.
+          });
+        }
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (!emblaApi) return;
 
-    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
+    const onSelect = () => {
+      const nextIndex = emblaApi.selectedScrollSnap();
+      setSelected(nextIndex);
+      playSelectedVideo(nextIndex);
+    };
+
     onSelect();
 
     emblaApi.on("select", onSelect);
     return () => {
       emblaApi.off("select", onSelect);
     };
-  }, [emblaApi]);
+  }, [emblaApi, playSelectedVideo]);
+
+  function goToNextSlide(index: number) {
+    if (!emblaApi) return;
+
+    if (index === slides.length - 1) {
+      emblaApi.scrollTo(0);
+      return;
+    }
+
+    emblaApi.scrollNext();
+  }
 
   return (
     <section className="relative bg-black">
@@ -41,13 +78,18 @@ export default function HeroCarousel() {
             <div key={i} className="relative flex-[0_0_100%]">
               <div className="relative h-[68vh] min-h-[460px] w-full md:h-[75vh] md:min-h-[520px]">
                 <video
+                  ref={(el) => {
+                    videoRefs.current[i] = el;
+                  }}
                   className="h-full w-full object-cover"
                   src={slide.src}
-                  autoPlay
                   muted
-                  loop
                   playsInline
                   preload="metadata"
+                  onCanPlay={() => {
+                    if (i === selected) playSelectedVideo(i);
+                  }}
+                  onEnded={() => goToNextSlide(i)}
                 />
 
                 {/* Dark cinematic overlay */}
