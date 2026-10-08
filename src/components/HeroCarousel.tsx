@@ -16,6 +16,9 @@ export default function HeroCarousel() {
   const slides: Slide[] = [
     { type: "video", src: "/hero/hero.mp4" },
     { type: "video", src: "/hero/hero2.mp4" },
+    { type: "video", src: "/hero/hero3.mp4" },
+    { type: "video", src: "/hero/hero4.mp4" },
+    { type: "video", src: "/hero/hero5.mp4" },
   ];
 
   useEffect(() => {
